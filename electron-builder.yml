@@ -45,3 +45,10 @@ nsis:
 
 electronLanguages:
   - en-US
+
+# Auto-update: releases are published to GitHub; the app checks this repo's
+# latest release for a newer version (see src/main/updater.ts).
+publish:
+  provider: github
+  owner: lowerygt
+  repo: KitchenDisplay

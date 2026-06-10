@@ -5,6 +5,7 @@ import { IPC } from '../shared/ipc'
 import { registerIpc } from './ipcHandlers'
 import { cameraService } from './camera'
 import { registerPhotoProtocol, registerPhotoScheme } from './photos'
+import { startAutoUpdates } from './updater'
 
 const isDev = !app.isPackaged
 
@@ -82,6 +83,9 @@ app.whenReady().then(() => {
 
   // Keep the wall display awake 24/7.
   powerSaveBlockerId = powerSaveBlocker.start('prevent-display-sleep')
+
+  // Self-update from GitHub releases (no-op in dev: no app-update.yml).
+  if (!isDev) startAutoUpdates()
 
   createWindow()
 

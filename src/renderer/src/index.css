@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply h-full w-full;
+  }
+
+  body {
+    @apply bg-neutral-950 text-neutral-100 overflow-hidden select-none;
+    font-family:
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+  }
+}
+
+/* Hide the cursor on the always-on display; reveal it on movement. */
+.cursor-none-idle {
+  cursor: none;
+}
+
+/* Slideshow crossfade (referenced by PhotoWidget's animate-[fadeIn_...]). */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Lock down the renderer: only allow our own assets + (later) loopback media server. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: kdphoto:; media-src 'self' blob: http://127.0.0.1:* http://localhost:*; connect-src 'self' kdphoto: http://127.0.0.1:* http://localhost:*; worker-src blob:; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    />
+    <title>Kitchen Display</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

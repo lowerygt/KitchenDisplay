@@ -1,0 +1,47 @@
+appId: com.tyler.kitchendisplay
+productName: Kitchen Display
+copyright: Copyright © 2026 Tyler
+
+directories:
+  # Drop a 256×256 (or larger) icon.ico here to brand the app + installer.
+  buildResources: build
+  output: dist
+
+# All-negation list: electron-builder implicitly prepends "**/*", then prunes
+# devDependencies automatically. We only need to keep out/ (the bundled main,
+# preload, renderer) and the production node_modules, and drop source/config.
+files:
+  - '!**/.vscode/*'
+  - '!.claude/**'
+  - '!src/**'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - '!{postcss.config.js,tailwind.config.js}'
+  - '!{.gitignore,.editorconfig,README.md,CHANGELOG.md}'
+  - '!{.env,.env.*,.npmrc,package-lock.json,pnpm-lock.yaml}'
+
+# ffmpeg-static ships a native ffmpeg.exe. Code inside app.asar can't be
+# executed, so it must live unpacked next to the asar (app.asar.unpacked).
+# camera.ts rewrites the path from app.asar -> app.asar.unpacked at runtime.
+asarUnpack:
+  - '**/node_modules/ffmpeg-static/**'
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-Setup.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Kitchen Display
+  # Keep the user's settings / saved layouts when uninstalling.
+  deleteAppDataOnUninstall: false
+
+electronLanguages:
+  - en-US

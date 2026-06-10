@@ -1,0 +1,43 @@
+# Builds the Windows installer and publishes it as a GitHub release whenever
+# a version tag (v1.2.3) is pushed. The wall display picks the release up via
+# electron-updater within ~4 hours.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write # create the release + upload assets with GITHUB_TOKEN
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check tag matches package.json version
+        shell: pwsh
+        run: |
+          $v = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ("v$v" -ne "${{ github.ref_name }}") {
+            Write-Error "Tag ${{ github.ref_name }} does not match package.json version v$v - bump package.json first."
+            exit 1
+          }
+
+      - run: npm run typecheck
+
+      - name: Build and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # App is unsigned; skip electron-builder's certificate discovery.
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npm run release

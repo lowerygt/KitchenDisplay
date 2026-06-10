@@ -52,3 +52,6 @@ publish:
   provider: github
   owner: lowerygt
   repo: KitchenDisplay
+  # Publish immediately instead of leaving a draft — the display only sees
+  # published releases, and CI has no human around to click Publish.
+  releaseType: release
